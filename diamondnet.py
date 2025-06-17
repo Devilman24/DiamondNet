@@ -3,6 +3,47 @@ import asyncio
 import httpx
 import time
 
+def print_banner():
+    banner = r"""
+ _________________________________________________________
+|\=========================================================\
+||                                                         |
+||        _        __        ___        __        _        |
+||       ; `-.__.-'. `-.__.-'. .`-.__.-' .`-.__.-' :       |
+||     _.'. . . . . . . . .,,,,,,,. . . . . . . . .`._     |
+||   .'. . . . . . . . ,a@@@@@@@@@@@a, . . . . . . . .`.   |
+||   `. . . . ,a@@@@@a@@@a@@@@@@@@@a@@@a@@@@@a, . . . ,'   |
+||     ) . . a@@@@@@a@@@@@a@@@@@@@a@@@@@a@@@@@@a . . (     |
+||   ,' . . .@@@%%%a@@@@@@@@@@@@@@@@@@@@@a%%%@@@  . . `.   |
+||   `.. . . @@@%%a@@@@@@""@@@@@@@""@@@@@@a%%@@@ . . .,'   |
+||     ). . . "@@a@@@@@@@@@SSSSSSS@@@@@@@@@a@@" . . .(     |
+||   ,'. . . . . `@@@@@@@@SSS, ,SSS@@@@@@@@' . . . . .`.   |
+||   `. . . . . . `@@@@@@@`SSS:SSS'@@@@@@@' . . . . . ,'   |
+||     ) . . . . . `@@@@@@@sssssss@@@@@@@' . . . . . (     |
+||   ,' . . . . . ,a@@a@@@@@@@@@@@@@@@a@@a, . . . . . `.   |
+||   `.. . . . .a@@@a@@@@@a@@@a@@@a@@@@@a@@@a. . . . .,'   |
+||     ). . . .a@@@@@a@@@@@@@@@@@@@@@@@a@@@@@a. . . .(     |
+||   ,'. . . . @@@@@@a@@@@'   "   `@@@@a@@@@@@ . . . .`.   |
+||   `. . . . .@@@@@@@aaaa,       ,aaaa@@@@@@@  . . . ,'   |
+||     ) . . . `@@@@@@@@@@@@a, ,a@@@@@@@@@@@@' . . . (     |
+||   ,' . . . . .`@@@@@@@@@@a@a@a@@@@@@@@@@'. . . . . `.   |
+||   `;;;;;;;;;;;;aaaaaaaaaa@@@@@aaaaaaaaaa;;;;;;;;;;;;'   |
+||     );;;;;;;,mMMMMMMMm@@@@@@@@@@@mMMMMMMMm,;;;;;;;(     |
+||   ,;;;;;;;;a@%#%%#%%#%Mm@@@@@@@mM%#%%#%%#%@a;;;;;;;;,   |
+||   `;;;;;;;;@@%%%%%%%%%%M@@";"@@M%%%%%%%%%%@@;;;;;;;;'   |
+||     );;;;;;`@a%%%%%%%%mM";;;;;"Mm%%%%%%%%a@';;;;;;(     |
+||   ,;;;;;;;;;;"@@@@@@@@";;;;;;;;;"@@@@@@@@";;;;;;;;;;,   |
+||   `;;;;;;;;;;;;"""""";;;;;;;;;;;;;"""""";;;;;;;;;;;;'   |
+||     );;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Devilman24(     |
+||     `:;;;:-~~~-:;;:-~~~-:;;;;;:-~~~-:;;:,-~~~-:;;;:'    |
+||       ~~~       ~~        ~~~        ~~        ~~~      |
+||                     .=============.                     |
+||                     |   Mr. Bill  :                     |
+||                     `-------------'                     |
+\|_________________________________________________________|
+"""
+    print(banner)
+
 async def check_path(session, directory, base_url, timeout, codes_to_check, progress, semaphore):
     url = f"{base_url.rstrip('/')}/{directory.lstrip('/')}"
     async with semaphore:
@@ -73,6 +114,8 @@ async def main():
                         help="Protocol to use for subdomains mode (default: https).")
     args = parser.parse_args()
 
+    print_banner()  # Affiche le dessin au lancement
+
     max_threads = args.threads
     timeout = args.timeout
     codes_to_check = set(map(int, args.codes.split(',')))
@@ -94,7 +137,6 @@ async def main():
         base_url = args.url
         print(f"[*] Mode: Path bruteforce on {base_url}")
     else:
-        # Extract domain without protocol or www
         base_domain = args.url.lower()
         if base_domain.startswith("http://"):
             base_domain = base_domain[len("http://"):]
